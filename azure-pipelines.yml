@@ -17,13 +17,13 @@ stages:
           # Checkout code from GitHub
           - task: Checkout@1
 
-          # Prepare SonarCloud analysis
-          - task: SonarCloudPrepare@1
-            inputs:
-              SonarCloud: 'SonarCloudServiceConnection'  # Service connection name
-              organization: 'devopsgroupassignment'            # SonarCloud organization key
-              projectKey: 'COMP308_GroupProject'      # SonarCloud project key
-              projectName: 'DevopsGroupAssignment/COMP308_GroupProject'
+          # # Prepare SonarCloud analysis
+          # - task: SonarCloudPrepare@1
+          #   inputs:
+          #     SonarCloud: 'SonarCloudServiceConnection'  # Service connection name
+          #     organization: 'devopsgroupassignment'            # SonarCloud organization key
+          #     projectKey: 'COMP308_GroupProject'      # SonarCloud project key
+          #     projectName: 'DevopsGroupAssignment/COMP308_GroupProject'
 
           # Use Maven for Java projects
           - script: |
