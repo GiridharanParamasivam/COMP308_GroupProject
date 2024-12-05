@@ -22,7 +22,7 @@ stages:
             inputs:
               SonarCloud: 'SonarCloudServiceConnection'  # Service connection name
               organization: 'devopsgroupassignment'            # SonarCloud organization key
-              projectKey: 'GiridharanParamasivam_COMP308_GroupProject'      # SonarCloud project key
+              projectKey: 'COMP308_GroupProject'      # SonarCloud project key
               projectName: 'COMP308_GroupProject'
 
           # Use Maven for Java projects
