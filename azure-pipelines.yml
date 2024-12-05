@@ -1,47 +1,38 @@
 trigger:
-  - main  # Trigger pipeline on changes to the main branch
+  - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  buildConfiguration: 'Release'
-
 stages:
-  # Continuous Integration (CI)
-  - stage: Build
+  - stage: BuildAndTest
+    displayName: 'Build and Test Application'
     jobs:
-      - job: BuildAndTest
+      - job: BuildAndTestJob
         displayName: 'Build and Test Job'
         steps:
           # Checkout code from GitHub
-          - task: Checkout@1
+          - checkout: self
 
-          # # Prepare SonarCloud analysis
-          # - task: SonarCloudPrepare@1
-          #   inputs:
-          #     SonarCloud: 'SonarCloudServiceConnection'  # Service connection name
-          #     organization: 'devopsgroupassignment'            # SonarCloud organization key
-          #     projectKey: 'COMP308_GroupProject'      # SonarCloud project key
-          #     projectName: 'DevopsGroupAssignment/COMP308_GroupProject'
-
-          # Use Maven for Java projects
+          # Install Node.js Manually
           - script: |
-              mvn clean install
-            displayName: 'Compile the project'
+              curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+              node -v
+              npm -v
+            displayName: 'Install Node.js'
 
-          # Run unit tests
+          # Install Dependencies
           - script: |
-              mvn test
-            displayName: 'Run unit tests'
+              npm install
+            displayName: 'Install Dependencies'
 
-          # Publish test results
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFiles: '**/TEST-*.xml'
+          # Build the React application
+          - script: |
+              npm run build
+            displayName: 'Build React Application'
 
-          # Run SonarCloud analysis
-          - task: SonarCloudAnalyze@1
-
-          # Publish SonarCloud quality gate results
-          - task: SonarCloudPublish@1
+          # Run Tests
+          - script: |
+              npm test -- --coverage
+            displayName: 'Run Unit Tests'
